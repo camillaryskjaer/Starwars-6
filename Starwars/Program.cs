@@ -11,11 +11,231 @@ namespace Starwars
     {
         static void Main(string[] args)
         {
+            NameComparer comparer = new NameComparer();
             List<Planet> planets = LoadData();
             Console.ReadKey();
+
+            //Opgave 1
+            // Udtræk alle planeter som starter med Bogstaven M
+            var planetQuery = planets.Where(o => o.Name.First() == 'M').ToList();
+
+            for (int i = 0; i < planetQuery.Count(); i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 2
+            // Udtræk alle planeter som indeholder bogstavet Y
+
+            planetQuery = planets.Where(o => o.Name.ToLower().Contains("y")).ToList();
+
+            for (int i = 0; i < planetQuery.Count(); i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 3
+            //Udtræk alle planeter med mere end 9 tegn men under 15
+
+            planetQuery = planets.Where(o => o.Name.Length > 9 && o.Name.Length < 15).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 4
+            // udtræk alle planeter som har a på 2nd position og slutter med e
+
+            planetQuery = planets.Where(o => o.Name[1] == 'a' && o.Name.EndsWith("e")).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 5
+            //udtræk alle planeter hvor rotationsperioden er større end 40 og sorter listen efter rotationsperioden
+
+            planetQuery = planets.Where(o => o.RotationPeriod > 40).OrderBy(o => o.RotationPeriod).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 6
+            //Lav et udtræk , hvor rotationsperioden er større end 10 og mindre end 20 og sorter listen efter navne på planeterne
+
+            planetQuery = planets.Where(o => o.RotationPeriod > 10 && o.RotationPeriod < 20).OrderBy(o => o.Name).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 7
+            //Lav et udtræk , hvor rotationsperioden er større end 30 og sorter listen efter navn og rotationsperiode.
+
+            planetQuery = planets.Where(o => o.RotationPeriod > 30).OrderBy(o => o.Name).ThenBy(o => o.RotationPeriod).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 8
+            // Lav et udtræk , hvor rotationsperioden er mindre end 30 eller surfacewater er større end 50 og der indgår ba i planetnavnet og sorter listen efter navn på planeterne, surfacewater og rotationsperiode
+
+            planetQuery = planets.Where(o => (o.RotationPeriod < 30 || o.SurfaceWater > 50) && o.Name.Contains("ba")).OrderBy(o => o.Name).ThenBy(o => o.SurfaceWater).ThenBy(o => o.RotationPeriod).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 9
+            //Lav et udtræk , hvor surfacewater er større end 0 og sorter listen i faldende orden.
+
+            planetQuery = planets.Where(o => o.SurfaceWater > 0).OrderByDescending(o => o.SurfaceWater).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 10
+            //Lav et udtræk på planeter, hvor du både kender diameteren og antallet af indbyggere og sorter listen efter hvor mange km2 en person har til rådighed for hver planet i stigende orden
+
+            planetQuery = planets.Where(o => o.Diameter > 0 && o.Population > 0).OrderBy(o => (((4*Math.PI) * (o.Diameter/2) * (o.Diameter/2)) / o.Population)).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 11
+            // Lav en forespørgsel som fjerner alle elementerne fra planets hvor rotationsperioden er større end 0 ved at gøre brug af Except.
+
+            var plan = planets.Where(o => o.RotationPeriod > 0);
+            planetQuery = planets.Except(plan).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 12
+            /*
+            Opret en liste ved hjælp af linq med alle de elementer, hvor navnet på Planeten starter med a eller ender på s.
+            
+            Opret en anden liste, via Linq, med alle de elementer, hvor terrænet er ”rainforests” og slå de to lister sammen ved hjælp af Union.
+            */
+
+            plan = planets.Where(o => o.Name.ToLower().StartsWith("a") || o.Name.ToLower().EndsWith("s")).ToList();
+            planetQuery = planets.Where(o => o.Terrain != null && o.Terrain.Contains("rainforests")).ToList();
+            var planetUnion = plan.Union(planetQuery);
+
+            using (var plans = planetUnion.GetEnumerator())
+            { 
+                while (plans.MoveNext())
+                {
+                    Console.WriteLine(plans.Current.Name);
+                }
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //Opgave 13
+            //Find alle elementer, hvor klimaet består af ørken
+
+            planetQuery = planets.Where(o => o.Terrain != null && (o.Terrain.Contains("deserts") || o.Terrain.Contains("rocky deserts"))).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //opgave 14
+            //Find alle elementer, hvor klimaet består af sump og sorter listen efter rotationsperiode og navn
+            planetQuery = planets.Where(o => o.Terrain != null && (o.Terrain.Contains("swamp") || o.Terrain.Contains("swamps"))).OrderBy(o=> o.RotationPeriod).ThenBy(o=> o.Name).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //opgave 15
+            //Find alle elementer, hvor der indgår en dobbelt vokal i navnet på planeten
+            /*Regex reg = new Regex(@"aa | ee | ii | oo | uu | yy");
+            planetQuery = planets.Where(o => reg.Matches(o.Name).Count > 0).ToList();*/
+
+            planetQuery = planets.Where(o => o.Name.Contains("aa") || o.Name.Contains("ee") || o.Name.Contains("ii") || o.Name.Contains("oo") || o.Name.Contains("uu") || o.Name.Contains("yy")).ToList();
+
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {   
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
+            //opgave 16
+            //Find alle elementer, hvor der indgår ”kk”, ”ll”, ”rr” eller ”nn”, i navnet på planeten og sorter listen efter navnet på planeten i faldende orden.
+
+            planetQuery = planets.Where(o => o.Name.Contains("kk") || o.Name.Contains("ll") || o.Name.Contains("rr") || o.Name.Contains("nn")).ToList();
+
+            for (int i = 0; i < planetQuery.Count; i++)
+            {
+                Console.WriteLine(planetQuery[i].Name);
+            }
+
+            Console.ReadKey();
+            Console.Clear();
+
         }
-
-
 
         static List<Planet> LoadData()
         {
