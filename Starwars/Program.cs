@@ -17,8 +17,14 @@ namespace Starwars
 
             //Opgave 1
             // Udtræk alle planeter som starter med Bogstaven M
+            
+            //Flot at du bruger First :) Men hvad hvis nu der var  nogle der havde begået en fejl og skrevet planetens navn med lille M?
+              var planetQuery = planets.Where(o => o.Name.ToLower().First() == 'M').ToList();
+
+            
             var planetQuery = planets.Where(o => o.Name.First() == 'M').ToList();
 
+            //Hvorfor bruger du for-løkker og ikke foreach? Jeg siger ikke at det er forkert, men hvorfor?
             for (int i = 0; i < planetQuery.Count(); i++)
             {
                 Console.WriteLine(planetQuery[i].Name);
@@ -147,7 +153,7 @@ namespace Starwars
 
             //Opgave 11
             // Lav en forespørgsel som fjerner alle elementerne fra planets hvor rotationsperioden er større end 0 ved at gøre brug af Except.
-
+            
             var plan = planets.Where(o => o.RotationPeriod > 0);
             planetQuery = planets.Except(plan).ToList();
 
@@ -170,6 +176,7 @@ namespace Starwars
             planetQuery = planets.Where(o => o.Terrain != null && o.Terrain.Contains("rainforests")).ToList();
             var planetUnion = plan.Union(planetQuery);
 
+            //Hvad gør en enumerator? Og hvorfor bruger du ikke den andre steder?
             using (var plans = planetUnion.GetEnumerator())
             { 
                 while (plans.MoveNext())
